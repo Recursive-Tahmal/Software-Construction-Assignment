@@ -1,7 +1,19 @@
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.IOException;
 
 public class SensorDataProcessor {
+
+    public static void main(String[] args) {
+        // Sensor data
+        double[][][] data = { { { 1, 2, 3 }, { 4, 5, 6 } }, { { 7, 8, 9 }, { 10, 11, 12 } } };
+        // Sensor limits
+        double[][] limit = { { 1, 2 }, { 3, 4 } };
+        SensorDataProcessor processor = new SensorDataProcessor(data, limit);
+        processor.calculateProcessorData();
+    }
+
+
     // Constants Instead of magic numbers.
     private static final int MIN_VALUE = 10; // Minimum number for sensor data processing
     private static final int MAX_VALUE = 50; // Maximum number for sensor data processing
@@ -52,9 +64,9 @@ public class SensorDataProcessor {
                     }
                 }
             }
-            for (i = 0; i < newProcessorData.length; i++) {
-                for (j = 0; j < newProcessorData[0].length; j++) {
-                    for (k = 0; k < newProcessorData[0][0].length; k++) {
+            for (int i = 0; i < newProcessorData.length; i++) {
+                for (int j = 0; j < newProcessorData[0].length; j++) {
+                    for (int k = 0; k < newProcessorData[0][0].length; k++) {
                         out.write(newProcessorData[i][j][k] + "\t");
                     }
                 }
