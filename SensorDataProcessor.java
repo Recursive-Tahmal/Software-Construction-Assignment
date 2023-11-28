@@ -28,34 +28,34 @@ public class SensorDataProcessor {
     }
 
     // Calculate data
-    public void calculate() {
-        int i, j, k = 0;
-        double[][][] data2 = new double[data.length][data[0].length][data[0][0].length];
+    public void calculateProcessorData() {
+        
+        double[][][] newProcessorData = new double[data.length][data[0].length][data[0][0].length];
         BufferedWriter out;
 
         // Write racing stats data into a file
         try {
             out = new BufferedWriter(new FileWriter("RacingStatsData.txt"));
-            for (i = 0; i < data.length; i++) {
-                for (j = 0; j < data[0].length; j++) {
-                    for (k = 0; k < data[0][0].length; k++) {
-                        data2[i][j][k] = data[i][j][k] / Math.pow(limit[i][j], POWER_CONSTANT);
-                        if (average(data2[i][j]) > MIN_VALUE && average(data2[i][j]) < MAX_VALUE)
+            for (int i = 0; i < data.length; i++) {
+                for (int j = 0; j < data[0].length; j++) {
+                    for (int k = 0; k < data[0][0].length; k++) {
+                        newProcessorData[i][j][k] = data[i][j][k] / Math.pow(limit[i][j], POWER_CONSTANT);
+                        if (average(newProcessorData[i][j]) > MIN_VALUE && average(newProcessorData[i][j]) < MAX_VALUE)
                             break;
-                        else if (Math.max(data[i][j][k], data2[i][j][k]) > data[i][j][k])
+                        else if (Math.max(data[i][j][k], newProcessorData[i][j][k]) > data[i][j][k])
                             break;
-                        else if (Math.pow(Math.abs(data[i][j][k]), 3) < Math.pow(Math.abs(data2[i][j][k]), 3)
-                                && average(data[i][j]) < data2[i][j][k] && (i + 1) * (j + 1) > 0)
-                            data2[i][j][k] *= 2;
+                        else if (Math.pow(Math.abs(data[i][j][k]), 3) < Math.pow(Math.abs(newProcessorData[i][j][k]), 3)
+                                && average(data[i][j]) < newProcessorData[i][j][k] && (i + 1) * (j + 1) > 0)
+                            newProcessorData[i][j][k] *= 2;
                         else
                             continue;
                     }
                 }
             }
-            for (i = 0; i < data2.length; i++) {
-                for (j = 0; j < data2[0].length; j++) {
-                    for (k = 0; k < data2[0][0].length; k++) {
-                        out.write(data2[i][j][k] + "\t");
+            for (i = 0; i < newProcessorData.length; i++) {
+                for (j = 0; j < newProcessorData[0].length; j++) {
+                    for (k = 0; k < newProcessorData[0][0].length; k++) {
+                        out.write(newProcessorData[i][j][k] + "\t");
                     }
                 }
             }
