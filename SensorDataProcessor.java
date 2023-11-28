@@ -2,55 +2,67 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * The SensorDataProcessor class processes raw sensor data based on specified
+ * conditions
+ * and writes the processed results to a file.
+ */
 public class SensorDataProcessor {
 
-    public static void main(String[] args) {
-        // Sensor data
-        double[][][] data = { { { 1, 2, 3 }, { 4, 5, 6 } }, { { 7, 8, 9 }, { 10, 11, 12 } } };
-        // Sensor limits
-        double[][] limit = { { 1, 2 }, { 3, 4 } };
-        SensorDataProcessor processor = new SensorDataProcessor(data, limit);
-        processor.calculateProcessorData();
-    }
-
-
     // Constants Instead of magic numbers.
-    private static final int MIN_VALUE = 10; // Minimum number for sensor data processing
-    private static final int MAX_VALUE = 50; // Maximum number for sensor data processing
-    private static final double POWER_CONSTANT = 2.0; // Power constant for sensor data calculations
+    private static final int MIN_VALUE = 10; // Minimum threshold for sensor data processing
+    private static final int MAX_VALUE = 50; // Maximum threshold for sensor data processing
+    private static final double POWER_CONSTANT = 2.0; // Exponential factor for sensor data calculations
 
     // Sensor data and limits.
-    public double[][][] data;
-    public double[][] limit;
+    public double[][][] data; // 3D array representing raw sensor data
+    public double[][] limit; // 2D array representing sensor limits
 
-    // Constructor
+    /**
+     * Constructor for the SensorDataProcessor class.
+     *
+     * @param data  3D array representing raw sensor data.
+     * @param limit 2D array representing sensor limits.
+     */
     public SensorDataProcessor(double[][][] data, double[][] limit) {
         this.data = data;
         this.limit = limit;
     }
 
-    // Calculates average of sensor data
+    /**
+     * Calculates the average of an array of doubles.
+     *
+     * @param array The array for which to calculate the average.
+     * @return The average value of the array.
+     */
     private double average(double[] array) {
         int i = 0;
-        double val = 0;
+        double sum = 0;
+
+        // Calculate sum of array elements
         for (i = 0; i < array.length; i++) {
-            val += array[i];
+            sum += array[i];
         }
-        return val / array.length;
+
+        // Calculate and return the average
+        return sum / array.length;
     }
 
-    // Calculate data
+    /**
+     * Processes raw sensor data based on specified conditions and writes the
+     * results to a file.
+     */
     public void calculateProcessorData() {
-        
         double[][][] newProcessorData = new double[data.length][data[0].length][data[0][0].length];
         BufferedWriter out;
 
-        // Write racing stats data into a file
+        // Write processed data into a file
         try {
-            out = new BufferedWriter(new FileWriter("RacingStatsData.txt"));
+            out = new BufferedWriter(new FileWriter("ProcessedSensorData.txt"));
             for (int i = 0; i < data.length; i++) {
                 for (int j = 0; j < data[0].length; j++) {
                     for (int k = 0; k < data[0][0].length; k++) {
+                        // Process sensor data based on given conditions
                         newProcessorData[i][j][k] = data[i][j][k] / Math.pow(limit[i][j], POWER_CONSTANT);
                         if (average(newProcessorData[i][j]) > MIN_VALUE && average(newProcessorData[i][j]) < MAX_VALUE)
                             break;
@@ -64,6 +76,8 @@ public class SensorDataProcessor {
                     }
                 }
             }
+
+            // Write processed data to the output file
             for (int i = 0; i < newProcessorData.length; i++) {
                 for (int j = 0; j < newProcessorData[0].length; j++) {
                     for (int k = 0; k < newProcessorData[0][0].length; k++) {
@@ -71,12 +85,13 @@ public class SensorDataProcessor {
                     }
                 }
             }
-        // Close the output stream
-                out.close();
-            } catch (IOException ioException) {
-                System.err.println("Error occurred while writing to the file: " + ioException.getMessage());
-            } catch (Exception exception) {
-                System.err.println("An unexpected error occurred: " + exception.getMessage());
-            }
+
+            // Close the output stream
+            out.close();
+        } catch (IOException ioException) {
+            System.err.println("Error occurred while writing to the file: " + ioException.getMessage());
+        } catch (Exception exception) {
+            System.err.println("An unexpected error occurred: " + exception.getMessage());
+        }
     }
 }
