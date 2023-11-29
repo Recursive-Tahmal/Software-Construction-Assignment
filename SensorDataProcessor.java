@@ -40,7 +40,7 @@ public class SensorDataProcessor {
         double sum = 0;
 
         // Calculate sum of array elements
-        for (i = 0; i < array.length; i++) {
+        for (i = 0; i < array.length; ++i) {
             sum += array[i];
         }
 
