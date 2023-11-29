@@ -1,6 +1,6 @@
 Students IDs and names:
 
-1- Muath Saad  2140014
+1- Muath Saad 2140014
 <br>
 2- Amin Selhabi 2140632
 <br>
@@ -8,4 +8,4 @@ Students IDs and names:
 <br>
 4- Sameer Ahmed Awaji 2140332
 <br>
-5- Yasser Aljohani 2040360 |
+5- Yasser Aljohani 2040360
